@@ -1,0 +1,21 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "nginx-backend-ingress"
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+  labels:
+    app: app
+spec:
+  rules:
+    -  http:
+        paths:
+          - path: /live/*
+            backend:
+              serviceName: "live-service"
+              servicePort: 80
+          - path: /stage/*
+            backend:
+              serviceName: "stage-service"
+              servicePort: 80

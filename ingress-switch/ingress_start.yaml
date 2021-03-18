@@ -1,0 +1,30 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: "nginx-backend-ingress"
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/actions.forward-stage: |-
+      {"Type":"forward","ForwardConfig":{"TargetGroups":[{"ServiceName":"green-service","ServicePort":"80","Weight":100}]}}
+    alb.ingress.kubernetes.io/conditions.forward-stage: |-
+      [{"Field":"http-header","HttpHeaderConfig":{"HttpHeaderName": "STAGE", "Values":["true"]}}]
+    alb.ingress.kubernetes.io/actions.forward-live: |-
+      {"Type":"forward","ForwardConfig":{"TargetGroups":[{"ServiceName":"blue-service","ServicePort":"80","Weight":100}]}}
+
+  labels:
+    app: app
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: forward-stage
+              servicePort: use-annotation
+    - http:
+        paths:
+          - path: /*
+            backend:
+              serviceName: forward-live
+              servicePort: use-annotation

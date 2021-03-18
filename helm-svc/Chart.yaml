@@ -1,0 +1,5 @@
+apiVersion: v2
+name: service-switch-blue-green
+description: A Helm chart to install the service-level switch for blue-green in EKS
+version: 0.1.0
+appVersion: 1.0

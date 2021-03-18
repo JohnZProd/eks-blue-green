@@ -1,0 +1,5 @@
+apiVersion: v2
+name: ingress-switch-blue-green
+description: A Helm chart to install the ingress-level switch for blue-green in EKS
+version: 0.1.0
+appVersion: 1.0
